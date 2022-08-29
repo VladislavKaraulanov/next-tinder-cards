@@ -1,33 +1,49 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Carousel from "nuka-carousel";
-import { animated, interpolate} from "react-spring";
-import Image from "next/image";
+import {animated, to} from "react-spring";
 
-class Card extends React.Component {
-  render() {
-    const { i, x, y, rot, scale, trans, cards, bind, objs } = this.props;
-    const { name, age, distance, text, pics } = objs[i];
+function Card({i, x, y, rot, scale, trans, cards, bind, objs}) {
+  const {name, age, distance, text, pics} = objs[i];
 
-    return (
+  // function test(x) {
+  //   if (x === -575) {
+  //     console.log("DISLIKE")
+  //   } else if (x === 575) {
+  //     console.log("LIKE")
+  //   }
+  // }
+
+  const [windowWidth, setWindowWidth] = useState(0)
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth + 200)
+  }, [])
+
+  const reaction = x => {
+    if (x === Number(`-${windowWidth}`) && x !== 0) {
+      console.log("DISLIKE")
+    } else if (x === windowWidth && x !== 0) {
+      console.log("LIKE")
+    }
+  }
+
+  return (
       <animated.div
-        key={i}
-        style={{
-          transform: interpolate(
-            [x, y],
-            (x, y) => `translate3d(${x}px,${y}px,0)`
-          )
-        }}
+          key={i}
+          style={{
+            transform: to([x, y], (x, y) => `translate3d(${reaction(x),x}px,${y}px,0)`,)
+          }}
       >
         <animated.div
-          {...bind(i)}
-          style={{
-            transform: interpolate([rot, scale], trans)
-          }}
+            {...bind(i)}
+            style={{
+              transform: to([rot, scale], trans)
+            }}
         >
           <div className="card">
             <Carousel>
               {pics.map((pic, index) => (
-                <img src={pic} key={`${pic + index}`} alt="profilePicture" />
+                  <img src={pic} key={`${pic + index}`} alt="profilePicture"/>
               ))}
             </Carousel>
             <h2>{name},</h2>
@@ -37,8 +53,7 @@ class Card extends React.Component {
           </div>
         </animated.div>
       </animated.div>
-    );
-  }
+  )
 }
 
 export default Card;

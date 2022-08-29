@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-// import { useSprings } from "react-spring/hooks";
+import React, {useState} from "react";
 import { useGesture } from "react-with-gesture";
 import Card from "./Card";
 
@@ -63,6 +62,7 @@ const trans = (r, s) =>
     10}deg) rotateZ(${r}deg) scale(${s})`;
 
 function Deck() {
+
   const [gone] = useState(() => new Set());
 
   const [props, set] = useSprings(cards.length, i => ({
@@ -104,7 +104,8 @@ function Deck() {
       });
 
       if (!down && gone.size === cards.length)
-        setTimeout(() => gone.clear() || set(i => to(i)), 600);
+        setTimeout(() => console.log("FINISH! IT`S WORKING"), 2000);
+        // setTimeout(() => gone.clear() || set(i => to(i)), 600);
     }
   );
 
